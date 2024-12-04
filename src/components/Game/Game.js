@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import GuessInput from '../GuessInput/GuessInput';
+import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 
-import { sample } from '../../utils';
+import { sample, range } from '../../utils';
 import { WORDS } from '../../data';
 import GuessResults from '../GuessResults/GuessResults';
 
@@ -19,7 +20,12 @@ function Game() {
 
   return (
     <>
-      <GuessResults guesses={guesses} />
+      <GuessResults
+        guesses={[
+          ...guesses,
+          ...range(0, NUM_OF_GUESSES_ALLOWED - guesses.length).fill('     '),
+        ]}
+      />
       <GuessInput handleSubmitGuess={handleSubmitGuess} />
     </>
   );
