@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 
-function GuessInput() {
-  const [input, setInput] = useState({ guess: '' });
+function GuessInput({ handleSubmitGuess }) {
+  const [input, setInput] = useState('');
 
   function handleInput(e) {
-    setInput({ guess: e.target.value.toUpperCase() });
+    setInput(e.target.value.toUpperCase());
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    setInput({ guess: '' });
-    console.log(input);
+    handleSubmitGuess(input);
+    setInput('');
+    console.log({ guess: input });
   }
 
   return (
@@ -21,7 +22,7 @@ function GuessInput() {
         id="guess-input"
         autoFocus
         required
-        value={input.guess}
+        value={input}
         onChange={handleInput}
         minLength={5}
         maxLength={5}
