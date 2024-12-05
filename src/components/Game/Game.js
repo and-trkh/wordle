@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import GuessInput from '../GuessInput/GuessInput';
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 
@@ -7,13 +7,12 @@ import { WORDS } from '../../data';
 import GuessResults from '../GuessResults/GuessResults';
 import { GameContext } from '../../contexts/GameContext';
 import ResultBanner from '../ResultBanner/ResultBanner';
+import RestartButton from '../RestartButton/RestartButton';
 
 // Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
 
 function Game() {
+  const [answer, setAnswer] = useState(sample(WORDS));
   const [isWin, setIsWin] = useState(null);
   const [guesses, setGuesses] = useState([]);
 
@@ -31,8 +30,14 @@ function Game() {
     setGuesses(nextGuesses);
   }
 
+  // To make debugging easier, we'll log the solution in the console.
+  console.info({ answer });
+
   return (
-    <GameContext.Provider value={{ answer, isWin, setIsWin }}>
+    <GameContext.Provider
+      value={{ answer, setAnswer, isWin, setIsWin, setGuesses }}
+    >
+      {isWin !== null && <RestartButton />}
       <GuessResults
         guesses={[
           ...guesses,

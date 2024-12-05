@@ -73,6 +73,7 @@ h1 {
 }
 
 .game-wrapper {
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -183,6 +184,13 @@ h1 {
 .sad.banner {
   background: var(--color-error);
   color: white;
+}
+
+.restart-button {
+  position: absolute;
+  border: 2px solid slateblue;
+  border-radius: 5px;
+  padding: 5px 10px;
 }
 
 .visually-hidden {
