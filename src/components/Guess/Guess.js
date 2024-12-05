@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { GameContext } from '../../contexts/GameContext';
 
 function Guess({ value }) {
+  const answer = useContext(GameContext);
+  const guessArray = value.split('');
+
   return (
     <p className="guess">
-      {value.split('').map((char, index) => (
-        <span className="cell" key={index}>
-          {char}
-        </span>
-      ))}
+      {guessArray.map((letter, index) => {
+        let status = '';
+
+        if (letter !== ' ') {
+          if (letter === answer.answer[index]) {
+            status = 'correct';
+          } else if (answer.answer.includes(letter)) {
+            status = 'misplaced';
+          } else {
+            status = 'incorrect';
+          }
+        }
+
+        return (
+          <span className={`cell ${status}`} key={index}>
+            {letter}
+          </span>
+        );
+      })}
     </p>
   );
 }

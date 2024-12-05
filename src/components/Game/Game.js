@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import GuessInput from '../GuessInput/GuessInput';
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 
 import { sample, range } from '../../utils';
 import { WORDS } from '../../data';
 import GuessResults from '../GuessResults/GuessResults';
+import { checkGuess } from '../../game-helpers';
+import { GameContext } from '../../contexts/GameContext';
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -19,7 +21,7 @@ function Game() {
   }
 
   return (
-    <>
+    <GameContext.Provider value={{ answer }}>
       <GuessResults
         guesses={[
           ...guesses,
@@ -27,7 +29,7 @@ function Game() {
         ]}
       />
       <GuessInput handleSubmitGuess={handleSubmitGuess} />
-    </>
+    </GameContext.Provider>
   );
 }
 
