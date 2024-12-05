@@ -5,8 +5,8 @@ import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 import { sample, range } from '../../utils';
 import { WORDS } from '../../data';
 import GuessResults from '../GuessResults/GuessResults';
-import { checkGuess } from '../../game-helpers';
 import { GameContext } from '../../contexts/GameContext';
+import ResultBanner from '../ResultBanner/ResultBanner';
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -14,14 +14,25 @@ const answer = sample(WORDS);
 console.info({ answer });
 
 function Game() {
+  const [isWin, setIsWin] = useState(null);
   const [guesses, setGuesses] = useState([]);
 
+  function checkWin(nextGuesses) {
+    if (nextGuesses.includes(answer)) {
+      setIsWin(true);
+    } else if (nextGuesses.length >= NUM_OF_GUESSES_ALLOWED) {
+      setIsWin(false);
+    }
+  }
+
   function handleSubmitGuess(guess) {
-    setGuesses([...guesses, guess]);
+    const nextGuesses = [...guesses, guess];
+    checkWin(nextGuesses);
+    setGuesses(nextGuesses);
   }
 
   return (
-    <GameContext.Provider value={{ answer }}>
+    <GameContext.Provider value={{ answer, isWin, setIsWin }}>
       <GuessResults
         guesses={[
           ...guesses,
@@ -29,6 +40,7 @@ function Game() {
         ]}
       />
       <GuessInput handleSubmitGuess={handleSubmitGuess} />
+      {isWin !== null && <ResultBanner attempts={guesses.length} />}
     </GameContext.Provider>
   );
 }

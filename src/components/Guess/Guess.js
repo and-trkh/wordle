@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { GameContext } from '../../contexts/GameContext';
 
 function Guess({ value }) {
-  const answer = useContext(GameContext);
+  const state = useContext(GameContext);
   const guessArray = value.split('');
 
   return (
@@ -11,9 +11,9 @@ function Guess({ value }) {
         let status = '';
 
         if (letter !== ' ') {
-          if (letter === answer.answer[index]) {
+          if (letter === state.answer[index]) {
             status = 'correct';
-          } else if (answer.answer.includes(letter)) {
+          } else if (state.answer.includes(letter)) {
             status = 'misplaced';
           } else {
             status = 'incorrect';
